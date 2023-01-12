@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RushersGameEngine", "RushersGameEngine\RushersGameEngine.csproj", "{D11E9896-EC7E-41A9-A2B7-1442E0E2FCE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{666C57FB-36AA-4967-B2BD-A084ACDE94CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{D11E9896-EC7E-41A9-A2B7-1442E0E2FCE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D11E9896-EC7E-41A9-A2B7-1442E0E2FCE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D11E9896-EC7E-41A9-A2B7-1442E0E2FCE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666C57FB-36AA-4967-B2BD-A084ACDE94CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666C57FB-36AA-4967-B2BD-A084ACDE94CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666C57FB-36AA-4967-B2BD-A084ACDE94CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666C57FB-36AA-4967-B2BD-A084ACDE94CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

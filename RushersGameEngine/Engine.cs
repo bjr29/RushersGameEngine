@@ -1,34 +1,66 @@
-﻿using Silk.NET.Maths;
+﻿using Silk.NET.Input;
+using Silk.NET.Maths;
+using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 
 namespace RushersGameEngine;
 
 public static class Engine {
-    private static IWindow? window;
+    internal static GL? Gl { private set; get; }
+    
+    private static IWindow? _window;
 
-    public static void Start(Vector2D<int> windowSize, string title = "Game Window", bool fullscreen = false) {
+    private static Buffer<float>? _vertexBuffer;
+    private static Buffer<uint>? _edgeBuffer;
+    private static VertexArray<float, uint>? _vertexArray;
+    
+    public static void Start(string title = "Game Window", Vector2D<int> windowSize = default/*, bool fullscreen = false,
+                             bool maximised = false*/) {
+        if (windowSize == default) {
+            windowSize = new Vector2D<int>(800, 500);
+        }
+        
         var options = WindowOptions.Default;
         options.Size = windowSize;
         options.Title = title;
-
-        window = Window.Create(options);
         
-        window.Load += WindowOnLoad;
-        window.Update += WindowOnUpdate;
-        window.Render += WindowOnRender;
+        _window = Window.Create(options);
         
-        window.Run();
+        _window.Load += Load;
+        _window.Closing += Close;
+        _window.Update += Update;
+        _window.Render += Render;
+        
+        _window.Run();
     }
 
-    private static void WindowOnRender(double obj) {
+    private static void Load() {
+        Gl = GL.GetApi(_window);
+        
+        var input = _window!.CreateInput();
+
+        foreach (var keyboard in input.Keyboards) {
+            keyboard.KeyDown += KeyboardKeyDown;
+        }
+
+        _vertexBuffer = new Buffer<float>(Vertices, BufferTargetARB.ArrayBuffer);
+        _edgeBuffer = new Buffer<uint>(Edges, BufferTargetARB.ArrayBuffer);
+        _vertexArray = new VertexArray<float, uint>(_vertexBuffer, _edgeBuffer);
+    }
+
+    private static void Close() {
         
     }
 
-    private static void WindowOnUpdate(double obj) {
+    private static void KeyboardKeyDown(IKeyboard keyboard, Key key, int i) {
+        Console.WriteLine(key.ToString());
+    }
+
+    private static void Update(double obj) {
         
     }
 
-    private static void WindowOnLoad() {
+    private static void Render(double obj) {
         
     }
 }
