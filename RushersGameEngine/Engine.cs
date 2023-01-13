@@ -54,11 +54,13 @@ public static class Engine {
         Console.WriteLine(key.ToString());
     }
 
-    private static void Update(double obj) {
+    private static void Update(double deltaTime) {
         
     }
 
-    private static void Render(double obj) {
+    private static void Render(double deltaTime) {
+        Gl!.Clear((uint) ClearBufferMask.ColorBufferBit);
+        
         
     }
 }
