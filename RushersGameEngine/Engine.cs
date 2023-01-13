@@ -43,9 +43,7 @@ public static class Engine {
             keyboard.KeyDown += KeyboardKeyDown;
         }
 
-        _vertexBuffer = new Buffer<float>(Vertices, BufferTargetARB.ArrayBuffer);
-        _edgeBuffer = new Buffer<uint>(Edges, BufferTargetARB.ArrayBuffer);
-        _vertexArray = new VertexArray<float, uint>(_vertexBuffer, _edgeBuffer);
+        
     }
 
     private static void Close() {
