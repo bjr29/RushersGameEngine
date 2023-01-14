@@ -7,7 +7,7 @@ public class Shader : IDisposable {
 
     public Shader(string vertexShaderPath, string fragmentShaderPath) {
         var vertexShader = LoadShader(ShaderType.VertexShader, vertexShaderPath);
-        var fragmentShader = LoadShader(ShaderType.VertexShader, fragmentShaderPath);
+        var fragmentShader = LoadShader(ShaderType.FragmentShader, fragmentShaderPath);
 
         _handle = Engine.Gl!.CreateProgram();
         
@@ -18,7 +18,7 @@ public class Shader : IDisposable {
         Engine.Gl.GetProgram(_handle, GLEnum.LinkStatus, out var status);
 
         if (status == 0) {
-            throw new Exception($"Failed to create texture: {Engine.Gl.GetProgramInfoLog(_handle)}");
+            throw new Exception($"Failed to create shader: {Engine.Gl.GetProgramInfoLog(_handle)}");
         }
         
         Engine.Gl.DetachShader(_handle, vertexShader);
@@ -69,5 +69,6 @@ public class Shader : IDisposable {
     }
 
     public void Dispose() {
+        Engine.Gl!.DeleteProgram(_handle);
     }
 }

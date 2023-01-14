@@ -7,28 +7,29 @@ class VertexArray<TVertexType, TIndexType> : IDisposable
         where TIndexType : unmanaged {
     private readonly uint _handle;
 
-    public VertexArray(Buffer<TVertexType> vertexBuffer, Buffer<TIndexType> indexBuffer) {
+    public VertexArray(Buffer<TVertexType> vertexBuffer, Buffer<TIndexType> indicesBuffer) {
         _handle = Engine.Gl!.GenVertexArray();
 
         Bind();
         vertexBuffer.Bind();
-        indexBuffer.Bind();
+        indicesBuffer.Bind();
     }
 
     public unsafe void VertexAttributePointer(uint index, int count, VertexAttribPointerType type, uint vertexSize,
                                               int offset) {
-        Engine.Gl!.VertexAttribPointer(index,
+        Engine.Gl!.VertexAttribPointer(
+                index,
                 count,
                 type,
                 false,
-                vertexSize * (uint)sizeof(TVertexType),
-                (void*)(offset * sizeof(TVertexType))
+                vertexSize * (uint) sizeof(TVertexType),
+                (void*) (offset * sizeof(TVertexType))
         );
         
         Engine.Gl!.EnableVertexAttribArray(index);
     }
 
-    private void Bind() {
+    public void Bind() {
         Engine.Gl!.BindVertexArray(_handle);
     }
 

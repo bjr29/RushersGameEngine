@@ -1,4 +1,5 @@
-﻿using Silk.NET.Input;
+﻿using RushersGameEngine.Nodes;
+using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
@@ -6,16 +7,16 @@ using Silk.NET.Windowing;
 namespace RushersGameEngine;
 
 public static class Engine {
-    internal static GL? Gl { private set; get; }
+    public static Node? RootNode { get; set; }
     
+    internal static GL? Gl { get; private set; }
+
     private static IWindow? _window;
 
-    private static Buffer<float>? _vertexBuffer;
-    private static Buffer<uint>? _edgeBuffer;
-    private static VertexArray<float, uint>? _vertexArray;
-    
-    public static void Start(string title = "Game Window", Vector2D<int> windowSize = default/*, bool fullscreen = false,
-                             bool maximised = false*/) {
+    public static event EventHandler? Ready;
+
+    public static void Start(string title = "Game Window", Vector2D<int> windowSize = default, bool fullscreen = false,
+                             bool maximised = false) {
         if (windowSize == default) {
             windowSize = new Vector2D<int>(800, 500);
         }
@@ -23,8 +24,18 @@ public static class Engine {
         var options = WindowOptions.Default;
         options.Size = windowSize;
         options.Title = title;
+
+        var windowFlags = WindowState.Normal;
+
+        if (fullscreen) {
+            windowFlags = WindowState.Fullscreen;
+            
+        } else if (maximised) {
+            windowFlags = WindowState.Maximized;
+        }
         
         _window = Window.Create(options);
+        _window.WindowState = windowFlags;
         
         _window.Load += Load;
         _window.Closing += Close;
@@ -42,12 +53,12 @@ public static class Engine {
         foreach (var keyboard in input.Keyboards) {
             keyboard.KeyDown += KeyboardKeyDown;
         }
-
         
+        Ready?.Invoke(null, EventArgs.Empty);
     }
 
     private static void Close() {
-        
+        RootNode?.Dispose();
     }
 
     private static void KeyboardKeyDown(IKeyboard keyboard, Key key, int i) {
@@ -55,12 +66,12 @@ public static class Engine {
     }
 
     private static void Update(double deltaTime) {
-        
+        RootNode?.InvokeUpdate(deltaTime);
     }
 
     private static void Render(double deltaTime) {
         Gl!.Clear((uint) ClearBufferMask.ColorBufferBit);
         
-        
+        RootNode?.InvokeRender(deltaTime);
     }
 }
