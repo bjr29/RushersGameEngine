@@ -9,7 +9,7 @@ class Buffer<T> : IDisposable where T : unmanaged {
     internal unsafe Buffer(Span<T> data, BufferTargetARB bufferType) {
         _bufferType = bufferType;
 
-        _handle = Engine.Gl!.GenBuffer();
+        _handle = Engine.Gl.GenBuffer();
         Bind();
 
         fixed (void* dat = data) {
@@ -18,10 +18,10 @@ class Buffer<T> : IDisposable where T : unmanaged {
     }
 
     internal void Bind() {
-        Engine.Gl!.BindBuffer(_bufferType, _handle);
+        Engine.Gl.BindBuffer(_bufferType, _handle);
     }
 
     public void Dispose() {
-        Engine.Gl!.DeleteBuffer(_handle);
+        Engine.Gl.DeleteBuffer(_handle);
     }
 }

@@ -1,15 +1,15 @@
 ﻿using Silk.NET.OpenGL;
 
-namespace RushersGameEngine;
+namespace RushersGameEngine.Resources;
 
-public class Shader : IDisposable {
+public class Shader : Resource {
     private readonly uint _handle;
 
     public Shader(string vertexShaderPath, string fragmentShaderPath) {
         var vertexShader = LoadShader(ShaderType.VertexShader, vertexShaderPath);
         var fragmentShader = LoadShader(ShaderType.FragmentShader, fragmentShaderPath);
 
-        _handle = Engine.Gl!.CreateProgram();
+        _handle = Engine.Gl.CreateProgram();
         
         Engine.Gl.AttachShader(_handle, vertexShader);
         Engine.Gl.AttachShader(_handle, fragmentShader);
@@ -30,7 +30,7 @@ public class Shader : IDisposable {
 
     private static uint LoadShader(ShaderType type, string path) {
         var content = File.ReadAllText(path);
-        var handle = Engine.Gl!.CreateShader(type);
+        var handle = Engine.Gl.CreateShader(type);
         
         Engine.Gl.ShaderSource(handle, content);
         Engine.Gl.CompileShader(handle);
@@ -45,11 +45,11 @@ public class Shader : IDisposable {
     }
 
     public void Use() {
-        Engine.Gl!.UseProgram(_handle);
+        Engine.Gl.UseProgram(_handle);
     }
 
     public void SetUniform(string name, int value) {
-        var location = Engine.Gl!.GetUniformLocation(_handle, name);
+        var location = Engine.Gl.GetUniformLocation(_handle, name);
 
         if (location == -1) {
             throw new Exception($"{name} not found in shader");
@@ -59,7 +59,7 @@ public class Shader : IDisposable {
     }
 
     public void SetUniform(string name, float value) {
-        var location = Engine.Gl!.GetUniformLocation(_handle, name);
+        var location = Engine.Gl.GetUniformLocation(_handle, name);
 
         if (location == -1) {
             throw new Exception($"{name} not found in shader");
@@ -68,7 +68,7 @@ public class Shader : IDisposable {
         Engine.Gl.Uniform1(location, value);
     }
 
-    public void Dispose() {
-        Engine.Gl!.DeleteProgram(_handle);
+    public override void Dispose() {
+        Engine.Gl.DeleteProgram(_handle);
     }
 }
