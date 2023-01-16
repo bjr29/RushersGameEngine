@@ -65,11 +65,18 @@ public class Node : IDisposable {
     }
 
     internal void InvokeUpdate(double deltaTime) {
-        Update?.Invoke(null, new DeltaTimeEventArgs(deltaTime));
+        Update?.Invoke(this, new DeltaTimeEventArgs(deltaTime));
+
+        foreach (var child in _children) {
+            child.InvokeUpdate(deltaTime);
+        }
     }
 
     internal void InvokeRender(double deltaTime) {
-        Render?.Invoke(null, new DeltaTimeEventArgs(deltaTime));
-    }
+        Render?.Invoke(this, new DeltaTimeEventArgs(deltaTime));
 
+        foreach (var child in _children) {
+            child.InvokeUpdate(deltaTime);
+        }
+    }
 }
