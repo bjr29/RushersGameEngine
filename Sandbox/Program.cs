@@ -1,4 +1,5 @@
-﻿using RushersGameEngine;
+﻿using System.Numerics;
+using RushersGameEngine;
 using RushersGameEngine.Nodes;
 using RushersGameEngine.Resources;
 
@@ -20,7 +21,11 @@ void Ready(object? sender, EventArgs args) {
         },
         new Shader("Shaders/Shader.vert", "Shaders/Shader.frag"),
         new Texture("Images/RushersGameEngine.png")
-    );
+    ) {
+        Transform = new Transform3D {
+            Scale = new Vector3(2, 0.5f, 0.5f),
+        }
+    };
 }
 
 

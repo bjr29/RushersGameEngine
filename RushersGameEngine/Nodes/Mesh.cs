@@ -39,6 +39,7 @@ public class Mesh : Node3D {
             Shader.SetUniform("uTexture0", 0);
         }
         
+        Shader.SetUniform("uModel", Transform.ViewMatrix);
         Engine.Gl.DrawElements(PrimitiveType.Triangles, (uint) Indices.Length, DrawElementsType.UnsignedInt, null);
     }
 
