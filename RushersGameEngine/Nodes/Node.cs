@@ -76,7 +76,7 @@ public class Node : IDisposable {
         Render?.Invoke(this, new DeltaTimeEventArgs(deltaTime));
 
         foreach (var child in _children) {
-            child.InvokeUpdate(deltaTime);
+            child.InvokeRender(deltaTime);
         }
     }
 }
