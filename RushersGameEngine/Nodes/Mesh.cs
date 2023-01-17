@@ -5,29 +5,64 @@ using Texture = RushersGameEngine.Resources.Texture;
 namespace RushersGameEngine.Nodes;
 
 public class Mesh : Node3D {
-    public float[] Vertices { get; set; }
-    public uint[] Indices { get; set; }
+    public static Mesh Quad => new(
+            new[] {
+                0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
+                0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+                -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+                -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,
+            },
+            new uint[] {
+                0, 1, 3,
+                1, 2, 3,
+            },
+            new Shader("Shaders/Default.vert", "Shaders/Default.frag")
+    );
+    
+    public float[] Vertices {
+        get => _vertices;
+        set {
+            _vertices = value;
+            GenerateMesh();
+        }
+    }
+
+    public uint[] Indices {
+        get => _indices;
+        set {
+            _indices = value; 
+            GenerateMesh();
+        }
+    }
+
     public Shader Shader { get; set; }
     public Texture? Texture { get; set; } 
     
-    private readonly Buffer<float> _vertexBuffer;
-    private readonly Buffer<uint> _indicesBuffer;
-    private readonly VertexArray<float, uint> _vertexArray;
+    private Buffer<float> _vertexBuffer = null!;
+    private Buffer<uint> _indicesBuffer = null!;
+    private VertexArray<float, uint> _vertexArray = null!;
+    
+    private float[] _vertices = null!;
+    private uint[] _indices = null!;
 
-    public Mesh(float[] vertices, uint[] indices, Shader shader, Texture texture) {
+    public Mesh(float[] vertices, uint[] indices, Shader shader, Texture? texture = null) {
         Vertices = vertices;
         Indices = indices;
         Shader = shader;
         Texture = texture;
 
-        _vertexBuffer = new Buffer<float>(Vertices, BufferTargetARB.ArrayBuffer);
-        _indicesBuffer = new Buffer<uint>(Indices, BufferTargetARB.ElementArrayBuffer);
-        _vertexArray = new VertexArray<float, uint>(_vertexBuffer, _indicesBuffer);
+        GenerateMesh();
         
         _vertexArray.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 5, 0);
         _vertexArray.VertexAttributePointer(1, 2, VertexAttribPointerType.Float, 5, 3);
 
         Render += GlRender;
+    }
+
+    private void GenerateMesh() {
+        _vertexBuffer = new Buffer<float>(Vertices, BufferTargetARB.ArrayBuffer);
+        _indicesBuffer = new Buffer<uint>(Indices, BufferTargetARB.ElementArrayBuffer);
+        _vertexArray = new VertexArray<float, uint>(_vertexBuffer, _indicesBuffer);
     }
 
     private unsafe void GlRender(object? sender, EventArgs eventArgs) {

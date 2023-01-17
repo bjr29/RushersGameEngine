@@ -8,24 +8,15 @@ Engine.Ready += Ready;
 Engine.Start(title: "Sandbox");
 
 void Ready(object? sender, EventArgs args) {
-    Engine.RootNode = new Mesh(
-        new[] {
-             0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
-             0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
-            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f, 0.5f, 0.0f, 0.0f,
-        },
-        new uint[] {
-            0, 1, 3,
-            1, 2, 3,
-        },
-        new Shader("Shaders/Shader.vert", "Shaders/Shader.frag"),
-        new Texture("Images/RushersGameEngine.png")
-    ) {
-        Transform = new Transform3D {
-            Scale = new Vector3(2, 0.5f, 0.5f),
-        }
-    };
+    // var mesh = Mesh.Quad;
+    // mesh.Texture = new Texture("Images/RushersGameEngine.png");
+    // mesh.Transform.Position = new Vector3( 0.5f, 1, 0.5f);
+    //
+    // Engine.RootNode = mesh;
+
+    var sprite = new Sprite(new Texture( "Images/RushersGameEngine.png" ));
+    sprite.Transform.Position = new Vector2( 0.5f, 0.5f );
+    Engine.RootNode = sprite;
 }
 
 
