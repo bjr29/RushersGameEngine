@@ -2,7 +2,7 @@ namespace RushersGameEngine.Nodes;
 
 public class Node : IDisposable {
     public string? Name { get; set; }
-    public Guid Guid { get; } = new();
+    public Guid Guid { get; } = Guid.NewGuid();
 
     public Node? Parent {
         get => _parent;
