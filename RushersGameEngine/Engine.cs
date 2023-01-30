@@ -1,6 +1,6 @@
-﻿using RushersGameEngine.Nodes;
+﻿using RushersGameEngine.Input;
+using RushersGameEngine.Nodes;
 using RushersGameEngine.Resources;
-using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
@@ -50,12 +50,8 @@ public static class Engine {
     private static void Load() {
         Gl = GL.GetApi(_window);
         
-        var input = _window!.CreateInput();
+        InputManager.StartInput(_window!);
 
-        foreach (var keyboard in input.Keyboards) {
-            keyboard.KeyDown += KeyboardKeyDown;
-        }
-        
         Ready?.Invoke(null, EventArgs.Empty);
     }
 
@@ -65,10 +61,6 @@ public static class Engine {
         foreach (var resource in Resources) {
             resource.Dispose();
         }
-    }
-
-    private static void KeyboardKeyDown(IKeyboard keyboard, Key key, int i) {
-        Console.WriteLine(key.ToString());
     }
 
     private static void Update(double deltaTime) {
